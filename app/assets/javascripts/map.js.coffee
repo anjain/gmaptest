@@ -12,7 +12,6 @@ zoom_allowedBounds = undefined
 # Variables initialization
 initDefaults = ->
   minZoomLevel = 2
-  maxZoomLevel = 3
   icon = '/images/marker.png'
   map_center = new (google.maps.LatLng)(41.926979, 12.517385)
   map_type_id = 'roadmap'
@@ -50,7 +49,6 @@ initMap = ->
   map = new (google.maps.Map)(document.getElementById('map'),
     zoom: 2
     minZoom: minZoomLevel
-    maxZoom: maxZoomLevel
     center: map_center
     mapTypeId: map_type_id)
   setBound map
