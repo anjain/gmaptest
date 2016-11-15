@@ -9,10 +9,12 @@ minZoomLevel = undefined
 
 # Events
 $(document).ready ->
+  setMapSize()
   initDefaults()
   initMap()
   return
 
+# Zoom disable event
 $(document).on 'change', '#zoom', ->
   if @checked
     map.setOptions
@@ -28,7 +30,21 @@ $(document).on 'change', '#zoom', ->
       disableDoubleClickZoom: true
   return
 
+# map resize on window screen resize
+$(window).on 'resize', ->
+  setMapSize()
+  return
+
 # Functions
+# set map size on basis of screen sizes
+setMapSize = ->
+  map_width = $(window).width() - 20
+  map_height = $(window).height() - 80
+  $('#map_container').css('width', map_width)
+  $('#map').css('width', map_width)
+  $('#map').css('height', map_height)
+
+# Variables initialization
 initDefaults = ->
   minZoomLevel = 3
   icon = '/images/marker.png'
@@ -62,6 +78,7 @@ initDefaults = ->
   ]
   return
 
+# Map Initialization
 initMap = ->
   map = new (google.maps.Map)(document.getElementById('map'),
     zoom: 1
@@ -84,6 +101,7 @@ initMap = ->
     i++
   return
 
+# add markers to map
 addMarker = (feature) ->
   infowindow = undefined
   marker = undefined
