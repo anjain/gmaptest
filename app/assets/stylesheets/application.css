@@ -17,3 +17,11 @@
 .height-50 {
   height: 50px;
 }
+.marker-prop {
+  background-image: url("/images/pin.png");
+  height: 71px;
+  width: 60px;
+}
+.marker-prop img {
+  padding: 3px;
+}

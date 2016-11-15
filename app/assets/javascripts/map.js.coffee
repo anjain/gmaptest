@@ -6,6 +6,7 @@ map_center = undefined
 map_type_id = undefined
 #maxZoomLevel = undefined
 minZoomLevel = undefined
+all_markers = []
 
 # Events
 $(document).ready ->
@@ -52,28 +53,54 @@ initDefaults = ->
   map_type_id = 'roadmap'
   features = [
     {
-      position: new (google.maps.LatLng)(26.91539, 75.22820)
+      position: new (google.maps.LatLng)(26.91539, 76.22820)
       text: '1st position'
+      user: '/images/user.png'
+    }
+    {
+      position: new (google.maps.LatLng)(26.91539, 77.22820)
+      text: '1st position'
+      user: '/images/user.png'
+    }
+    {
+      position: new (google.maps.LatLng)(26.91539, 78.22820)
+      text: '1st position'
+      user: '/images/user.png'
+    }
+    {
+      position: new (google.maps.LatLng)(26.91539, 79.22820)
+      text: '1st position'
+      user: '/images/user.png'
+    }
+    {
+      position: new (google.maps.LatLng)(27.91539, 77.22820)
+      text: '1st position'
+      user: '/images/user.png'
     }
     {
       position: new (google.maps.LatLng)(20.91539, 75.22820)
       text: '2nd position'
+      user: '/images/user.png'
     }
     {
       position: new (google.maps.LatLng)(17.91747, 80.22912)
       text: '3rd position'
+      user: '/images/user.png'
     }
     {
       position: new (google.maps.LatLng)(37.682084, -97.305173)
       text: '4th position'
+      user: '/images/user.png'
     }
     {
       position: new (google.maps.LatLng)(39.198168, -116.643085)
       text: '5th position'
+      user: '/images/user.png'
     }
     {
       position: new (google.maps.LatLng)(13.768462, 100.653619)
       text: '6th position'
+      user: '/images/user.png'
     }
   ]
   return
@@ -97,22 +124,41 @@ initMap = ->
   i = 0
   feature = undefined
   while feature = features[i]
-    addMarker feature
+    marker = createMarker(map, feature)
+    all_markers.push marker
     i++
+  setCluster(map, all_markers)
   return
 
-# add markers to map
-addMarker = (feature) ->
-  infowindow = undefined
-  marker = undefined
+# Set cluster for all markers
+setCluster = (map, all_markers) ->
+  markerClusterer = new MarkerClusterer(map, all_markers,
+    maxZoom: 15
+    gridSize: 40
+    styles: [ {
+      url: '/images/cluster_pin.png'
+      height: 71
+      width: 60
+    } ])
+  return
 
-  marker = new (google.maps.Marker)(
-    position: feature.position
-    icon: icon
-    map: map)
-  infowindow = new (google.maps.InfoWindow)(content: feature.text)
+# Create markers
+createMarker = (map, item) ->
+  div = document.createElement('div')
+  div.className = 'marker-prop'
+  div.style.cursor = 'pointer'
+  div.innerHTML = '<img src="' + item.user + '">'
 
+  marker = new RichMarker(
+    position: item.position
+    map: map
+    draggable: false
+    flat: true
+    anchor: RichMarkerPosition.BOTTOM
+    content: div)
+
+  infowindow = new google.maps.InfoWindow(content: item.text)
   marker.addListener 'click', ->
     infowindow.open map, marker
     return
-  return
+  marker
