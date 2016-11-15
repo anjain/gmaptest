@@ -162,3 +162,4 @@ createMarker = (map, item) ->
     infowindow.open map, marker
     return
   marker
+  
